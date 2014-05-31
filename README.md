@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/MorganShowman/method_callbacks.svg?branch=master)](https://travis-ci.org/MorganShowman/method_callbacks)
+
+[![Gem Version](https://badge.fury.io/rb/method_callbacks.svg)](http://badge.fury.io/rb/method_callbacks)
+
 # MethodCallbacks
 
 Add after, around, and before callbacks to your methods.
