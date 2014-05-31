@@ -16,7 +16,7 @@ describe MethodCallbacks do
     expect(test_callbacks).to receive(:puts).with("Executing unload").ordered
     expect(test_callbacks).to receive(:puts).with("Executing block").ordered
 
-    test_callbacks.action
+    expect(test_callbacks.action).to eq("Return value")
   end
 end
 
