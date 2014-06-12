@@ -1,3 +1,6 @@
+1.1.1 / 2014-06-12
+  * Replace rspec nested format with documentation
+
 1.1.0 / 2014-06-12
 	* Add badges for Travis CI and RubyGems to README
   * Test return value of method with callbacks
