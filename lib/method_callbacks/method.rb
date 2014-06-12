@@ -7,6 +7,8 @@ module MethodCallbacks
   class Method
     extend Forwardable
 
+    ALIAS_PREFIX = "__method_callback_alias_to_original"
+
     attr_reader :name
 
     def_delegators :definer, :define, :define_with_block
@@ -18,6 +20,10 @@ module MethodCallbacks
 
     def ==(other)
       self.name == other.name
+    end
+
+    def alias
+      "#{ALIAS_PREFIX}_#{name}"
     end
 
     def callbacks(type)

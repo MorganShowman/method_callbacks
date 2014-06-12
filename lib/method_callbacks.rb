@@ -2,8 +2,6 @@ require "method_callbacks/finder"
 require "method_callbacks/version"
 
 module MethodCallbacks
-  ALIAS_PREFIX = "__method_callback_alias_to_original"
-
   def self.included(base)
     base.extend(ClassMethods)
   end
@@ -55,12 +53,12 @@ module MethodCallbacks
     def redefine_method(method)
       return if !method || method.locked?
 
-      method.lock! && alias_method("#{ALIAS_PREFIX}_#{method.name}", method.name)
+      method.lock! && alias_method(method.alias, method.name)
 
       define_method(method.name) do
         method.execute(:before, self)
         return_value = method.execute(:around, self) do
-          send("#{ALIAS_PREFIX}_#{method.name}")
+          send(method.alias)
         end
         method.execute(:after, self)
         return_value
