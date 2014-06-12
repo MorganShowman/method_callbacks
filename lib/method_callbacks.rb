@@ -41,7 +41,9 @@ module MethodCallbacks
     end
 
     def find_or_new(method_name)
-      finder(method_name).find_or_new
+      method = finder(method_name).find_or_new
+      redefine_method(method)
+      method
     end
 
     def method_added(method_name)
@@ -51,7 +53,7 @@ module MethodCallbacks
     end
 
     def redefine_method(method)
-      return if !method || method.locked?
+      return if !method || method.locked? || !method_defined?(method.name) || method_defined?(method.alias)
 
       method.lock! && alias_method(method.alias, method.name)
 

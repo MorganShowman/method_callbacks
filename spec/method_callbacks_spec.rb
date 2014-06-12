@@ -23,9 +23,12 @@ end
 class TestCallbacks
   include MethodCallbacks
 
-  after_method :action, :farewell, :unload
-  after_method :action do
-    puts "Executing block"
+  def intro
+    puts "Executing intro"
+  end
+
+  def greet
+    puts "Executing greet"
   end
 
   before_method :action do
@@ -33,35 +36,14 @@ class TestCallbacks
   end
   before_method :action, :intro
   before_method :action, :greet
-
-  around_method :action, :outer_around, :inner_around
-
-  def outer_around
-    puts "Executing pre outer_around"
-    return_value = yield
-    puts "Executing post outer_around"
-    return_value
-  end
-
-  def inner_around
-    puts "Executing pre inner_around"
-    return_value = yield
-    puts "Executing post inner_around"
-    return_value
-  end
-
   def action
     puts "Executing action"
 
     "Return value"
   end
-
-  def greet
-    puts "Executing greet"
-  end
-
-  def intro
-    puts "Executing intro"
+  after_method :action, :farewell, :unload
+  after_method :action do
+    puts "Executing block"
   end
 
   def farewell
@@ -70,5 +52,21 @@ class TestCallbacks
 
   def unload
     puts "Executing unload"
+  end
+
+  def outer_around
+    puts "Executing pre outer_around"
+    return_value = yield
+    puts "Executing post outer_around"
+    return_value
+  end
+
+  around_method :action, :outer_around, :inner_around
+
+  def inner_around
+    puts "Executing pre inner_around"
+    return_value = yield
+    puts "Executing post inner_around"
+    return_value
   end
 end
