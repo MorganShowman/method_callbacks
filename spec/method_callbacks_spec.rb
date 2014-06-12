@@ -2,6 +2,7 @@ require "spec_helper"
 
 describe MethodCallbacks do
   let(:test_callbacks) { TestCallbacks.new }
+  let(:test_proxy_result) { TestProxyResult.new }
 
   it "should execute all the callbacks on action" do
     expect(test_callbacks).to receive(:puts).with("Executing block").ordered
@@ -17,6 +18,21 @@ describe MethodCallbacks do
     expect(test_callbacks).to receive(:puts).with("Executing block").ordered
 
     expect(test_callbacks.action).to eq("Return value")
+  end
+
+  it "should proxy the result" do
+    expect(test_proxy_result.result).to eq("the original result was: hello!")
+  end
+
+  it "should proxy the result with block" do
+    test_string = "the original result was:"
+    expect(test_proxy_result.result_with_block do |result|
+      "#{test_string} #{result}"
+    end).to eq("#{test_string} hello world!")
+  end
+
+  it "should chain proxy results" do
+    expect(test_proxy_result.chain_result_proxy).to eq("chained_result: original_result: original")
   end
 end
 
@@ -69,4 +85,24 @@ class TestCallbacks
     puts "Executing post inner_around"
     return_value
   end
+end
+
+class TestProxyResult
+  include MethodCallbacks
+
+  def result
+    "hello!"
+  end
+  proxy_result(:result) { |original_result| "the original result was: #{original_result}" }
+
+  def result_with_block
+    "hello world!"
+  end
+  proxy_result(:result_with_block) { |original_result, &block| block.call(original_result) }
+
+  def chain_result_proxy
+    "original"
+  end
+  proxy_result(:chain_result_proxy) { |original_result| "original_result: #{original_result}" }
+  proxy_result(:chain_result_proxy) { |chained_result| "chained_result: #{chained_result}" }
 end

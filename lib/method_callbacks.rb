@@ -16,6 +16,10 @@ module MethodCallbacks
       define(method_name, :around, callback_names)
     end
 
+    def proxy_result(method_name, &block)
+      define_with_block(method_name, :proxy, &block)
+    end
+
     def before_method(method_name, *callback_names)
       define(method_name, :before, callback_names)
       define_with_block(method_name, :before, &Proc.new) if block_given?
@@ -57,11 +61,10 @@ module MethodCallbacks
 
       method.lock! && alias_method(method.alias, method.name)
 
-      define_method(method.name) do
+      define_method(method.name) do |&block|
         method.execute(:before, self)
-        return_value = method.execute(:around, self) do
-          send(method.alias)
-        end
+        return_value = method.execute(:around, self) { send(method.alias) }
+        return_value = method.execute(:proxy, return_value, &block)
         method.execute(:after, self)
         return_value
       end

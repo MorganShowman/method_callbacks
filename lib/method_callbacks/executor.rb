@@ -8,10 +8,15 @@ module MethodCallbacks
       @object = object
     end
 
-    def execute
-      return execute_callbacks if !block_given?
-
-      callbacks.empty? ? yield : execute_around_callbacks(&Proc.new)
+    def execute(&block)
+      case type
+      when :proxy
+        execute_proxy_callbacks(&block)
+      when :around
+        execute_around_callbacks(&block)
+      else
+        execute_callbacks
+      end
     end
 
     private
@@ -26,6 +31,10 @@ module MethodCallbacks
 
     def execute_callbacks
       callbacks.each { |callback_name| callback_name.is_a?(Proc) ? object.instance_eval(&callback_name) : object.send(callback_name) }
+    end
+
+    def execute_proxy_callbacks(&block_on_call)
+      callbacks.reduce(object) { |result, block| block.call(result, &block_on_call) }
     end
   end
 end
