@@ -91,6 +91,33 @@ Executing farewell after action but before unload!
 Executing unload after action and farewell!
 Executing block callback after action and everything else!
  => "My return value!"
+
+class TestProxyResult
+  include MethodCallbacks
+
+  def result
+    "hello!"
+  end
+  proxy_result(:result) { |original_result| "the original result was: #{original_result}" }
+
+  def result_with_block
+    "hello world!"
+  end
+  proxy_result(:result_with_block) { |original_result, &block| block.call(original_result) }
+
+  def chain_result_proxy
+    "original"
+  end
+  proxy_result(:chain_result_proxy) { |original_result| "original_result: #{original_result}" }
+  proxy_result(:chain_result_proxy) { |chained_result| "chained_result: #{chained_result}" }
+end
+
+> TestProxyResult.new.result
+ => "the original result was: hello!"
+> TestProxyResult.new.result_with_block
+ => "hello world!"
+> TestProxyResult.new.chain_result_proxy
+ => "original_result: chained_result: original"
 ```
 
 ## Contributing
