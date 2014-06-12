@@ -1,3 +1,7 @@
+1.2.0 / 2014-06-12
+  * Add proxy_result as a type of callback
+  * Add proxy_result examples to the readme
+
 1.1.1 / 2014-06-12
   * Replace rspec nested format with documentation
 
