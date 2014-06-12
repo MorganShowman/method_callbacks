@@ -1,0 +1,9 @@
+1.1.0 / 2014-06-12
+	* Add badges for Travis CI and RubyGems to README
+  * Test return value of method with callbacks
+  * Encapsulate a method's alias in the method class
+  * Fix defining callbacks after the method definition
+	* Add changelog
+
+1.0.0 / 2014-05-31
+  * Initial release of method_callbacks
