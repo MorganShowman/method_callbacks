@@ -20,6 +20,18 @@ describe MethodCallbacks do
     expect(test_callbacks.action).to eq("Return value")
   end
 
+  it "should work when callbacks defined before method definition" do
+    expect(test_callbacks).to receive(:puts).with("Executing intro")
+
+    expect(test_callbacks.test_define_before_method).to eq("Executing test_define_before_method")
+  end
+
+  it "should work when callbacks defined after method definition" do
+    expect(test_callbacks).to receive(:puts).with("Executing unload")
+
+    expect(test_callbacks.test_define_after_method).to eq("Executing test_define_after_method")
+  end
+
   it "should proxy the result" do
     expect(test_proxy_result.result).to eq("the original result was: hello!")
   end
@@ -85,6 +97,16 @@ class TestCallbacks
     puts "Executing post inner_around"
     return_value
   end
+
+  before_method :test_define_before_method, :intro
+  def test_define_before_method
+    "Executing test_define_before_method"
+  end
+
+  def test_define_after_method
+    "Executing test_define_after_method"
+  end
+  after_method :test_define_after_method, :unload
 end
 
 class TestProxyResult

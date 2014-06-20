@@ -50,8 +50,8 @@ module MethodCallbacks
       method
     end
 
-    def __method_callbacks_method_added(method_name)
-      __method_callbacks_redefine_method(find(method_name))
+    def method_added(method_name)
+      __method_callbacks_redefine_method(__method_callbacks_find(method_name))
 
       super
     end
