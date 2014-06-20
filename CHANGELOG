@@ -1,3 +1,6 @@
+1.2.2 / 2014-06-20
+  * Fix defining callbacks before method
+
 1.2.1 / 2014-06-18
   * Rename private methods to avoid naming collisions
 
