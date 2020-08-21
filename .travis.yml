@@ -2,14 +2,16 @@ language: ruby
 cache: bundler
 
 rvm:
-  - 1.9.3
-  - 2.0.0
+  - 2.5
+  - 2.6
+  - 2.7
+  - ruby-head
 
 script: 'bundle exec rake'
 
 notifications:
   email:
     recipients:
-      - morganshowman@gmail.com
+      - vachhanihpavan@gmail.com
     on_failure: change
     on_success: never
